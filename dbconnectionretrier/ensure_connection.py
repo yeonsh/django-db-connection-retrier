@@ -5,6 +5,7 @@ from time import sleep
 import aspectlib
 
 from django.db import OperationalError
+from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
 
@@ -19,6 +20,10 @@ def ensure_connection(instance):
     Useful in case the DNS resolution is shaky, as in the case
     of the Heroku environment
     """
+    error_message = "could not translate host name"
+    if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
+        error_message = settings.DB_CONNECTION_RETRY_STRING
+
     max_tries = 3
     for trial in range(0, max_tries):
         try:
@@ -26,7 +31,7 @@ def ensure_connection(instance):
             yield aspectlib.Return(result)
         except OperationalError as error:
             message = str(error)
-            if "could not translate host name" not in message:
+            if error_message not in message:
                 raise
             if trial == max_tries - 1:
                 raise

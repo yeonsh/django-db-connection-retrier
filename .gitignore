@@ -30,3 +30,4 @@ dist/
 
 # Ignore pip meta data
 pip-wheel-metadata/
+.vscode/settings.json
