@@ -8,6 +8,10 @@ from django.db import OperationalError
 from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
+ERROR_MESSAGE = "could not translate host name"
+if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
+    ERROR_MESSAGE = settings.DB_CONNECTION_RETRY_STRING
+    print(ERROR_MESSAGE)
 
 
 @aspectlib.Aspect
@@ -20,10 +24,10 @@ def ensure_connection(instance):
     Useful in case the DNS resolution is shaky, as in the case
     of the Heroku environment
     """
-    error_message = "could not translate host name"
-    if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
-        error_message = settings.DB_CONNECTION_RETRY_STRING
-        print(error_message)
+    # error_message = "could not translate host name"
+    # if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
+    #     error_message = settings.DB_CONNECTION_RETRY_STRING
+    #     print(error_message)
 
     max_tries = 3
     for trial in range(0, max_tries):
