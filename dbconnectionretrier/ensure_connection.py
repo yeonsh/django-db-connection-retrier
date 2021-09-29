@@ -8,6 +8,7 @@ from django.db import OperationalError
 from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
+
 ERROR_MESSAGE = "could not translate host name"
 if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
     ERROR_MESSAGE = settings.DB_CONNECTION_RETRY_STRING
