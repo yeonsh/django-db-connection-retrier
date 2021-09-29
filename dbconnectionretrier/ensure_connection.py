@@ -23,6 +23,7 @@ def ensure_connection(instance):
     error_message = "could not translate host name"
     if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
         error_message = settings.DB_CONNECTION_RETRY_STRING
+        print(error_message)
 
     max_tries = 3
     for trial in range(0, max_tries):
