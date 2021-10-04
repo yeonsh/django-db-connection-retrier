@@ -36,7 +36,7 @@ with open(
 
 setup(
     name="django-db-connection-retrier",
-    version="1.0c6",
+    version="1.0c7",
     packages=find_packages(),
     include_package_data=True,
     license="MIT License",
