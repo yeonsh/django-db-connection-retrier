@@ -9,10 +9,10 @@ from django.conf import settings
 
 LOGGER = logging.getLogger(__name__)
 
-ERROR_MESSAGE = "could not translate host name"
-if hasattr(settings, 'DB_CONNECTION_RETRY_STRING'):
-    ERROR_MESSAGE = settings.DB_CONNECTION_RETRY_STRING
-    print(ERROR_MESSAGE)
+ERROR_MESSAGES = ["could not translate host name"]
+if hasattr(settings, 'DB_CONNECTION_RETRY_STRINGS'):
+    ERROR_MESSAGES += settings.DB_CONNECTION_RETRY_STRINGS
+    print(ERROR_MESSAGES)
 
 
 @aspectlib.Aspect
@@ -33,7 +33,12 @@ def ensure_connection(instance):
             yield aspectlib.Return(result)
         except OperationalError as error:
             message = str(error)
-            if ERROR_MESSAGE not in message:
+            found = False
+            for m in ERROR_MESSAGES:
+                if m in message:
+                    found = True
+                    break
+            if not found:
                 raise
             if trial == max_tries - 1:
                 raise
